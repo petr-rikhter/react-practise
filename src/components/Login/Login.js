@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Card from "../UI/Card/Card";
 import styles from "./Login.module.css";
@@ -11,20 +11,33 @@ const Login = (props) => {
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
+  //каждый раз когда будут изменяться inputEmail или inputPassword, будет запускаться этот эффект
+  useEffect(() => {
+    //Давая фишка дает возможность отслеживать поля инпута не постоянно, а только когда пользователь перестал вводить символы на протяжении одной секунды.
+    const timer = setTimeout(() => {
+      setFormIsValid(
+        inputEmail.includes("@") && inputPassword.trim().length > 7
+      );
+    }, 1000);
+
+    //Но чтобы таймер не запускался каждый раз после ввода символа, есть функция очистки, которая чистит все предыдущие таймеры
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputEmail, inputPassword]);
+
   const emailChangeHandler = (event) => {
     setInputEmail(event.target.value);
 
-    setFormIsValid(
-      event.target.value.includes("@") && inputPassword.trim().length > 7
-    );
+    // setFormIsValid(inputEmail.includes("@") && inputPassword.trim().length > 7);
   };
 
   const passwordChangeHandler = (event) => {
     setInputPassword(event.target.value);
 
-    setFormIsValid(
-      event.target.value.trim().length > 6 && inputEmail.includes("@")
-    );
+    // setFormIsValid(
+    //   event.target.value.trim().length > 6 && inputEmail.includes("@")
+    // );
   };
 
   const validateEmailHandler = () => {
