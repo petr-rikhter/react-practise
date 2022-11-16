@@ -8,6 +8,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const loginHandler = (email, password) => {
+    //Сохранение в локалсторейдж, первый аргумент - название(ключ), второй - значение
+    localStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
   };
 
