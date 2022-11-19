@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 
 import Card from "../UI/Card/Card";
 import styles from "./Login.module.css";
 import Button from "../UI/Button/Button";
+import AuthContext from "../../store (context)/AuthContext";
 
 const emailReducer = (prevState, action) => {
-  if (action.type == "USER_INPUT") {
+  if (action.type === "USER_INPUT") {
     return {
       value: action.value,
       isValid: action.value.includes("@"),
     };
   }
 
-  if (action.type == "INPUT_BLUR") {
+  if (action.type === "INPUT_BLUR") {
     return {
       value: prevState.value,
       isValid: prevState.value.includes("@"),
@@ -33,7 +34,7 @@ const passwordReducer = (prevState, action) => {
     };
   }
 
-  if (action.type == "INPUT_BLUR") {
+  if (action.type === "INPUT_BLUR") {
     return {
       value: prevState.value,
       isValid: prevState.value.trim().length > 7,
@@ -46,7 +47,7 @@ const passwordReducer = (prevState, action) => {
   };
 };
 
-const Login = (props) => {
+const Login = () => {
   // const [inputEmail, setInputEmail] = useState("");
   // const [emailIsValid, setEmailIsValid] = useState();
   // const [inputPassword, setInputPassword] = useState("");
@@ -65,6 +66,8 @@ const Login = (props) => {
 
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
+
+  const context = useContext(AuthContext);
 
   //каждый раз когда будут изменяться inputEmail или inputPassword, будет запускаться этот эффект
   useEffect(() => {
@@ -110,7 +113,7 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(emailState.value, passwordState.value);
+    context.onLogin(emailState.value, passwordState.value);
   };
 
   return (
