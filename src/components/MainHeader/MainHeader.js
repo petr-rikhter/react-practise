@@ -7,10 +7,7 @@ const MainHeader = (props) => {
   return (
     <header className={styles["main-header"]}>
       <h1>React Advanced</h1>
-      <Navigation
-        isLoggedIn={props.isAuthenticated}
-        onLogout={props.onLogout}
-      />
+      <Navigation onLogout={props.onLogout} />
     </header>
   );
 };

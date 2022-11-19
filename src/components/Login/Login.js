@@ -70,11 +70,13 @@ const Login = (props) => {
   useEffect(() => {
     //Данная фишка дает возможность отслеживать поля инпута не постоянно, а только когда пользователь перестал вводить символы на протяжении одной секунды.
     const timer = setTimeout(() => {
+      console.log("setTimeout");
       setFormIsValid(emailIsValid && passwordIsValid);
     }, 1000);
 
     //Но чтобы таймер не запускался каждый раз после ввода символа, есть функция очистки, которая чистит все предыдущие таймеры
     return () => {
+      console.log("timer");
       clearTimeout(timer);
     };
   }, [emailIsValid, passwordIsValid]);
