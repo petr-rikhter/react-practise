@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useContext,
+  useRef,
+} from "react";
 
 import Card from "../UI/Card/Card";
 import styles from "./Login.module.css";
@@ -70,6 +76,9 @@ const Login = () => {
 
   const context = useContext(AuthContext);
 
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+
   //каждый раз когда будут изменяться inputEmail или inputPassword, будет запускаться этот эффект
   useEffect(() => {
     //Данная фишка дает возможность отслеживать поля инпута не постоянно, а только когда пользователь перестал вводить символы на протяжении одной секунды.
@@ -114,13 +123,21 @@ const Login = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    context.onLogin(emailState.value, passwordState.value);
+
+    if (formIsValid) {
+      context.onLogin(emailState.value, passwordState.value);
+    } else if (!emailIsValid) {
+      emailInputRef.current.active();
+    } else {
+      passwordInputRef.current.active();
+    }
   };
 
   return (
     <Card className={styles.login}>
       <form onSubmit={submitHandler}>
         <Input
+          ref={emailInputRef}
           id="email"
           label="Email"
           type="email"
@@ -131,6 +148,7 @@ const Login = () => {
         />
 
         <Input
+          ref={passwordInputRef}
           id="password"
           label="Password"
           type="password"
@@ -141,7 +159,7 @@ const Login = () => {
         />
 
         <div className={styles.actions}>
-          <Button type="submit" className={styles.btn} disabled={!formIsValid}>
+          <Button type="submit" className={styles.btn}>
             Вход
           </Button>
         </div>
